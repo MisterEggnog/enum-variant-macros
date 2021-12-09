@@ -63,8 +63,9 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
             match value {
                 #enum_name::#variant(n) => Ok(n),
                 _ => Err(VariantCastError {
-                    exp_type: concat!(stringify!(#enum_name), "::", stringify!(#variant)).to_string(),
-                    act_type: format!(concat!(stringify!(#enum_name), "::{}"), value.as_ref()),
+                    enum_type: stringify!(#enum_name).to_string(),
+                    exp_type: stringify!(#wrapped_type).to_string(),
+                    variant_name: value.as_ref().to_string(),
                 }),
             }
         }
