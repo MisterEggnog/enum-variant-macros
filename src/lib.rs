@@ -5,3 +5,7 @@
 //! Use at your own risk.
 //! Actually, your probably better off just not using it at all.
 pub use try_from_derive_proc::TryFromVariants;
+
+mod variant_cast_error;
+
+pub use variant_cast_error::*;
