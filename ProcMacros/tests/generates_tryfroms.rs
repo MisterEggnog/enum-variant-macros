@@ -2,7 +2,7 @@ use strum_macros::AsRefStr;
 use try_from_derive_proc::*;
 
 mod common;
-use common::StackException;
+use common::VariantCastError;
 
 #[allow(dead_code)]
 #[derive(AsRefStr, TryFromVariants)]

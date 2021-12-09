@@ -1,11 +1,13 @@
 use std::error::Error;
 use std::fmt;
 
-/// Errors that can stop the operation.
+/// Different variant than expected during TryFrom
 #[derive(Debug)]
 pub struct VariantCastError {
-    exp_type: String,
-    act_type: String,
+    /// Expected type
+    pub exp_type: String,
+    /// Actual type
+    pub act_type: String,
 }
 
 impl fmt::Display for VariantCastError {
