@@ -1,5 +1,5 @@
 use strum_macros::AsRefStr;
-use try_from_derive::*;
+use try_from_derive_proc::*;
 
 mod common;
 use common::StackException;

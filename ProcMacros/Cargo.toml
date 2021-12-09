@@ -1,12 +1,17 @@
 [package]
-name = "try_from_derive"
+name = "try_from_derive_proc"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-try_from_derive_proc = { version = "0.1", path = "ProcMacros" }
+[lib]
+proc-macro = true
 
-[workspace]
-members = ["ProcMacros"]
+[dependencies]
+syn = "1.0"
+quote = "1.0"
+proc-macro2 = "1.0"
+
+[dev-dependencies]
+strum_macros = "0.22"
