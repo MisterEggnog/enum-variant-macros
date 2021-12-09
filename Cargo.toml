@@ -8,5 +8,8 @@ edition = "2021"
 [dependencies]
 try_from_derive_proc = { version = "0.1", path = "ProcMacros" }
 
+[dev-dependencies]
+strum_macros = "0.22"
+
 [workspace]
 members = ["ProcMacros"]

@@ -8,9 +8,9 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
 /// !!Unstable!! Generates TryFrom for each variant of enum.
 ///
-/// The type needs to provide a as_ref() -> impl Str for for this derivation to
+/// The type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
 /// succeed.
-/// I recommend using strum_macro::AsRefStr.
+/// I recommend using strum_macro::IntoStaticStr.
 /// # Warning
 /// Note that this only works for enums composed solely of 1 unnamed variant.
 /// If it finds a single one that does not follow these requirements, it fails.
@@ -57,15 +57,15 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
 
     let stream = quote! {
     impl TryFrom<#enum_name> for #wrapped_type {
-        type Error = VariantCastError;
+        type Error = ::try_from_derive::VariantCastError;
 
         fn try_from(value: #enum_name) -> std::result::Result<Self, Self::Error> {
             match value {
                 #enum_name::#variant(n) => Ok(n),
                 _ => Err(VariantCastError {
-                    enum_type: stringify!(#enum_name).to_string(),
-                    exp_type: stringify!(#wrapped_type).to_string(),
-                    variant_name: value.as_ref().to_string(),
+                    enum_type: stringify!(#enum_name),
+                    exp_type: stringify!(#wrapped_type),
+                    variant_name: value.into(),
                 }),
             }
         }

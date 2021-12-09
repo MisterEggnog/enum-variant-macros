@@ -5,11 +5,11 @@ use std::fmt;
 #[derive(Debug)]
 pub struct VariantCastError {
     /// Enum type
-    pub enum_type: String,
+    pub enum_type: &'static str,
     /// Expected variant
-    pub exp_type: String,
+    pub exp_type: &'static str,
     /// Actual variant
-    pub variant_name: String,
+    pub variant_name: &'static str,
 }
 
 impl fmt::Display for VariantCastError {
@@ -31,9 +31,9 @@ mod tests {
     #[test]
     fn expected_display_string() {
         let error = VariantCastError {
-            enum_type: String::from("Carl"),
-            exp_type: String::from("Fish"),
-            variant_name: String::from("Bread"),
+            enum_type: "Carl",
+            exp_type: "Fish",
+            variant_name: "Bread",
         };
         let displayed = format!("{}", error);
         assert_eq!("Casting Carl to Fish failed, variant was Bread.", displayed);

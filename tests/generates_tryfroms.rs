@@ -1,11 +1,8 @@
-use strum_macros::AsRefStr;
-use try_from_derive_proc::*;
-
-mod common;
-use common::VariantCastError;
+use strum_macros::IntoStaticStr;
+use try_from_derive::*;
 
 #[allow(dead_code)]
-#[derive(AsRefStr, TryFromVariants)]
+#[derive(IntoStaticStr, TryFromVariants)]
 enum Pizza {
     Spaghetti(bool),
     Terry(i32),
