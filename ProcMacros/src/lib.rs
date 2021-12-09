@@ -1,9 +1,7 @@
-//! This macro library is currently unstable, it works for it's role in Nostromo
-//! Engine, but is not in the state for general use.
-//! It may fail in many ways & it currently requires linkage to Nostromo for
-//! the error type.
-//! Use at your own risk.
-//! Actually, your probably better off just not using it at all.
+//! Proc macros for derive_try_from
+//!
+//! Do not link to this.
+//! This library is solely to provide proc macros.
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
