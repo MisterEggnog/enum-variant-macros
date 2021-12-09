@@ -57,12 +57,12 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
 
     let stream = quote! {
     impl TryFrom<#enum_name> for #wrapped_type {
-        type Error = StackException;
+        type Error = VariantCastError;
 
         fn try_from(value: #enum_name) -> std::result::Result<Self, Self::Error> {
             match value {
                 #enum_name::#variant(n) => Ok(n),
-                _ => Err(StackException::InvalidStackValue {
+                _ => Err(VariantCastError {
                     exp_type: concat!(stringify!(#enum_name), "::", stringify!(#variant)).to_string(),
                     act_type: format!(concat!(stringify!(#enum_name), "::{}"), value.as_ref()),
                 }),
