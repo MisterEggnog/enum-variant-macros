@@ -59,10 +59,10 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
     impl TryFrom<#enum_name> for #wrapped_type {
         type Error = ::try_from_derive::VariantCastError;
 
-        fn try_from(value: #enum_name) -> std::result::Result<Self, Self::Error> {
+        fn try_from(value: #enum_name) -> ::std::result::Result<Self, Self::Error> {
             match value {
                 #enum_name::#variant(n) => Ok(n),
-                _ => Err(VariantCastError {
+                _ => Err(::try_from_derive::VariantCastError {
                     enum_type: stringify!(#enum_name),
                     exp_type: stringify!(#wrapped_type),
                     variant_name: value.into(),
