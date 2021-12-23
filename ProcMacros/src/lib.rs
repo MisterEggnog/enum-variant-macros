@@ -6,15 +6,14 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
-/// !!Unstable!! Generates TryFrom for each variant of enum.
+/// Generates TryFrom for each variant of enum.
 ///
 /// The type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
 /// succeed.
-/// I recommend using strum_macro::IntoStaticStr.
+/// I recommend using [strum_macro::IntoStaticStr](https://docs.rs/strum/0.23.0/strum/derive.IntoStaticStr.html).
 /// # Warning
-/// Note that this only works for enums composed solely of 1 unnamed variant.
+/// Note that this only works for enums composed solely of 1 member unnamed variant.
 /// If it finds a single one that does not follow these requirements, it fails.
-/// Furthermore, the return type is nostromo_engine::StackException.
 #[proc_macro_derive(TryFromVariants)]
 pub fn try_from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
