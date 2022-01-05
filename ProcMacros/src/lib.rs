@@ -69,9 +69,23 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
             }
         }
     }
-        };
+    };
 
     stream
+}
+
+fn variant_from(
+    enum_name: syn::Ident,
+    variant: syn::Ident,
+    wrapped_type: syn::Ident,
+) -> TokenStream {
+    quote! {
+        impl From<#wrapped_type> for #enum_name {
+            fn try_from(value: #wrapped_type) -> #enum_name {
+                #enum_name::#variant(#wrapped_type)
+            }
+        }
+    }
 }
 
 #[cfg(test)]
