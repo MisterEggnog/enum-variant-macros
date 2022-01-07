@@ -51,10 +51,18 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
             enum_name, variant.ident
         ),
     };
-    let variant = variant.ident.clone();
-    let wrapped_type = member_data.first();
+    let variant = &variant.ident;
+    let wrapped_type = member_data.first().unwrap();
 
-    let stream = quote! {
+    try_from_quote(enum_name, variant, wrapped_type)
+}
+
+fn try_from_quote(
+    enum_name: &syn::Ident,
+    variant: &syn::Ident,
+    wrapped_type: &syn::Field,
+) -> TokenStream {
+    quote! {
     impl TryFrom<#enum_name> for #wrapped_type {
         type Error = ::try_from_derive::VariantCastError;
 
@@ -69,15 +77,13 @@ fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> T
             }
         }
     }
-    };
-
-    stream
+    }
 }
 
 fn variant_from(
-    enum_name: syn::Ident,
-    variant: syn::Ident,
-    wrapped_type: syn::Ident,
+    enum_name: &syn::Ident,
+    variant: &syn::Ident,
+    wrapped_type: &syn::Ident,
 ) -> TokenStream {
     quote! {
         impl From<#wrapped_type> for #enum_name {
