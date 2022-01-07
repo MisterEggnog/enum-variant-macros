@@ -139,11 +139,11 @@ mod tests {
     fn fails_for_union_proc() {
         let union_tokens = TokenStream::from_str("union NotEnum { a: u32, b: f32, }").unwrap();
         let union_tokens: DeriveInput = parse2(union_tokens).unwrap();
-        from_variants(union_tokens, "TryFromVariants", &try_from_quote);
+        from_variants_proc(union_tokens, "TryFromVariants", &try_from_quote);
     }
 
     #[test]
-    #[should_panic(expected = "TryFrom requires only unamed members, failed Dewey::Frank")]
+    #[should_panic(expected = "TryFromVariants requires only unamed members, failed Dewey::Frank")]
     fn fails_for_non_unnamed_enums() {
         let enum_tokens = TokenStream::from_str("enum Dewey { Frank, Ernest(bool), }").unwrap();
         let enum_tokens: DeriveInput = parse2(enum_tokens).unwrap();
