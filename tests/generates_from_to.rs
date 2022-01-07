@@ -1,6 +1,6 @@
-use try_from_derive::*;
+use try_from_derive_proc::FromVariants;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, FromVariants)]
 enum Wrap {
     Float(f32),
     Int(i32),
