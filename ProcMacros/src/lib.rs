@@ -113,7 +113,7 @@ fn variant_from_quote(
     quote! {
         impl From<#wrapped_type> for #enum_name {
             fn from(value: #wrapped_type) -> #enum_name {
-                #enum_name::#variant(#wrapped_type)
+                #enum_name::#variant(value)
             }
         }
     }
