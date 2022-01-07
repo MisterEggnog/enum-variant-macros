@@ -18,43 +18,59 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields};
 pub fn try_from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
-    let output = tryfrom_variants(input);
+    let output = tryfrom_variants(input, "TryFromVariants", &try_from_quote);
 
     output.into()
 }
 
-fn tryfrom_variants(input: DeriveInput) -> TokenStream {
+fn tryfrom_variants<F>(input: DeriveInput, macro_name: &str, quote_fn: F) -> TokenStream
+where
+    F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
+{
     let input_name = input.ident;
 
     let stream = match input.data {
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
             for variant in enum_data.variants {
-                stream.extend(generate_variant_tryfrom(&input_name, &variant));
+                stream.extend(generate_variant_tryfrom(
+                    &input_name,
+                    &variant,
+                    macro_name,
+                    &quote_fn,
+                ));
             }
             stream
         }
         _ => panic!(
-            "Derive TryFromVariants for {} failed. Must be an enum.",
-            input_name
+            "Derive {} for {} failed. Must be an enum.",
+            macro_name, input_name
         ),
     };
 
     stream
 }
 
-fn generate_variant_tryfrom(enum_name: &syn::Ident, variant: &syn::Variant) -> TokenStream {
+fn generate_variant_tryfrom<F>(
+    enum_name: &syn::Ident,
+    variant: &syn::Variant,
+    macro_name: &str,
+    quote_fn: F,
+) -> TokenStream
+where
+    F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
+{
     let member_data = match &variant.fields {
         Fields::Unnamed(fields) => &fields.unnamed,
         _ => panic!(
-            "TryFrom requires only unamed members, failed {}::{}",
-            enum_name, variant.ident
+            "{} requires only unamed members, failed {}::{}",
+            macro_name, enum_name, variant.ident
         ),
     };
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
-    try_from_quote(enum_name, variant, wrapped_type)
+    quote_fn(enum_name, variant, wrapped_type)
 }
 
 fn try_from_quote(
@@ -87,7 +103,7 @@ fn variant_from(
 ) -> TokenStream {
     quote! {
         impl From<#wrapped_type> for #enum_name {
-            fn try_from(value: #wrapped_type) -> #enum_name {
+            fn from(value: #wrapped_type) -> #enum_name {
                 #enum_name::#variant(#wrapped_type)
             }
         }
@@ -106,7 +122,7 @@ mod tests {
     fn fails_for_struct() {
         let struct_tokens: TokenStream = TokenStream::from_str("struct NotEnum;").unwrap();
         let struct_tokens: DeriveInput = parse2(struct_tokens).unwrap();
-        tryfrom_variants(struct_tokens);
+        tryfrom_variants(struct_tokens, "TryFromVariants", &try_from_quote);
     }
 
     #[test]
@@ -114,7 +130,7 @@ mod tests {
     fn fails_for_union() {
         let union_tokens = TokenStream::from_str("union NotEnum { a: u32, b: f32, }").unwrap();
         let union_tokens: DeriveInput = parse2(union_tokens).unwrap();
-        tryfrom_variants(union_tokens);
+        tryfrom_variants(union_tokens, "TryFromVariants", &try_from_quote);
     }
 
     #[test]
@@ -122,6 +138,6 @@ mod tests {
     fn fails_for_non_unnamed_enums() {
         let enum_tokens = TokenStream::from_str("enum Dewey { Frank, Ernest(bool), }").unwrap();
         let enum_tokens: DeriveInput = parse2(enum_tokens).unwrap();
-        tryfrom_variants(enum_tokens);
+        tryfrom_variants(enum_tokens, "TryFromVariants", &try_from_quote);
     }
 }
