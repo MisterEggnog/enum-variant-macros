@@ -11,7 +11,7 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields};
 /// The type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
 /// succeed.
 /// I recommend using [strum_macro::IntoStaticStr](https://docs.rs/strum/0.23.0/strum/derive.IntoStaticStr.html).
-/// # Warning
+/// ## Warning
 /// Note that this only works for enums composed solely of 1 member unnamed variant.
 /// If it finds a single one that does not follow these requirements, it fails.
 #[proc_macro_derive(TryFromVariants)]
@@ -23,6 +23,22 @@ pub fn try_from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStr
     output.into()
 }
 
+/// Generates From for each variant of enum.
+///
+/// Generate from casts for each single member variant of an enum.
+/// ## Warning
+/// Note that this only works for enums composed solely of 1 member unnamed variant.
+/// If it finds a single one that does not follow these requirements, it fails. 
+/// ## Example
+/// ```
+/// # use try_from_derive_proc::*;
+///	#[derive(PartialEq, Debug, FromVariants)]
+/// enum Wrap {
+///		Float(f32),
+///		Int(i32),
+///	}
+///	assert_eq!(Wrap::Int(4), Wrap::from(4_i32));
+/// ```
 #[proc_macro_derive(FromVariants)]
 pub fn from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
