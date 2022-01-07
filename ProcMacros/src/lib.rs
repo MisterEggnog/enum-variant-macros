@@ -18,12 +18,12 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields};
 pub fn try_from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
-    let output = tryfrom_variants(input, "TryFromVariants", &try_from_quote);
+    let output = from_variants(input, "TryFromVariants", &try_from_quote);
 
     output.into()
 }
 
-fn tryfrom_variants<F>(input: DeriveInput, macro_name: &str, quote_fn: F) -> TokenStream
+fn from_variants<F>(input: DeriveInput, macro_name: &str, quote_fn: F) -> TokenStream
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
 {
@@ -33,7 +33,7 @@ where
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
             for variant in enum_data.variants {
-                stream.extend(generate_variant_tryfrom(
+                stream.extend(generate_variant_froms(
                     &input_name,
                     &variant,
                     macro_name,
@@ -51,7 +51,7 @@ where
     stream
 }
 
-fn generate_variant_tryfrom<F>(
+fn generate_variant_froms<F>(
     enum_name: &syn::Ident,
     variant: &syn::Variant,
     macro_name: &str,
@@ -122,7 +122,7 @@ mod tests {
     fn fails_for_struct() {
         let struct_tokens: TokenStream = TokenStream::from_str("struct NotEnum;").unwrap();
         let struct_tokens: DeriveInput = parse2(struct_tokens).unwrap();
-        tryfrom_variants(struct_tokens, "TryFromVariants", &try_from_quote);
+        from_variants(struct_tokens, "TryFromVariants", &try_from_quote);
     }
 
     #[test]
@@ -130,7 +130,7 @@ mod tests {
     fn fails_for_union() {
         let union_tokens = TokenStream::from_str("union NotEnum { a: u32, b: f32, }").unwrap();
         let union_tokens: DeriveInput = parse2(union_tokens).unwrap();
-        tryfrom_variants(union_tokens, "TryFromVariants", &try_from_quote);
+        from_variants(union_tokens, "TryFromVariants", &try_from_quote);
     }
 
     #[test]
@@ -138,6 +138,6 @@ mod tests {
     fn fails_for_non_unnamed_enums() {
         let enum_tokens = TokenStream::from_str("enum Dewey { Frank, Ernest(bool), }").unwrap();
         let enum_tokens: DeriveInput = parse2(enum_tokens).unwrap();
-        tryfrom_variants(enum_tokens, "TryFromVariants", &try_from_quote);
+        from_variants(enum_tokens, "TryFromVariants", &try_from_quote);
     }
 }
