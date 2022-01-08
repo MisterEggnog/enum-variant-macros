@@ -13,7 +13,7 @@ fn tryfrom_works_fails_for_pizza_spaghetti() {
     let source = Pizza::Spaghetti(false);
     let output =
         bool::try_from(source).expect("Casting from Pizza::Spaghetti to bool should succeed");
-    assert_eq!(false, output);
+    assert!(!output);
 
     let source = Pizza::Terry(12345);
     let output = bool::try_from(source);

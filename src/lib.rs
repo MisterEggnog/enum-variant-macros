@@ -1,13 +1,36 @@
 //! This macro library is currently incomplete, it works for enums in a very
 //! specific format but it is currently very touchy.
 //! Use at your own risk.
+//!
+//! To use the TryFromVariants macro, the type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
+//! succeed.
+//! I recommend using [strum_macros::IntoStaticStr](https://docs.rs/strum/0.23.0/strum/derive.IntoStaticStr.html).
+//! ## Warning
+//! Note that this only works for enums composed solely of 1 member unnamed variant.
+//! If it finds a single one that does not follow these requirements, it fails.
+//!
+//! ## Example
+//! ```
+//! use try_from_derive_proc::*;
+//! use strum_macros::IntoStaticStr;
+//!
+//! #[derive(PartialEq, Debug, IntoStaticStr, FromVariants, TryFromVariants)]
+//! enum Wrap {
+//!     Float(f32),
+//!     Int(i32),
+//! }
+//! assert_eq!(Wrap::Int(4), Wrap::from(4_i32));
+//! assert_eq!(Ok(4_i32), i32::try_from(Wrap::Int(4)));
+//! assert!(f32::try_from(Wrap::Int(4)).is_err());
+//! ```
 use std::error::Error;
 use std::fmt;
 
+pub use try_from_derive_proc::FromVariants;
 pub use try_from_derive_proc::TryFromVariants;
 
 /// Different variant than expected during TryFrom
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct VariantCastError {
     /// Enum type
     pub enum_type: &'static str,

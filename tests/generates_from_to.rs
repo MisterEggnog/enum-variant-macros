@@ -8,6 +8,6 @@ enum Wrap {
 
 #[test]
 fn cast_to() {
-    assert_eq!(Wrap::from(1.0 as f32), Wrap::Float(1.0));
-    assert_eq!(Wrap::from(1 as i32), Wrap::Int(1));
+    assert_eq!(Wrap::from(1.0_f32), Wrap::Float(1.0));
+    assert_eq!(Wrap::from(1_i32), Wrap::Int(1));
 }
