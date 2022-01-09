@@ -1,4 +1,4 @@
-use try_from_derive_proc::FromVariants;
+use enum_variant_macros::FromVariants;
 
 #[derive(PartialEq, Debug, FromVariants)]
 enum Wrap {

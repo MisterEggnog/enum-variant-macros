@@ -1,5 +1,5 @@
 [package]
-name = "try_from_derive_proc"
+name = "enum_variant_macros_macros"
 version = "0.1.0"
 edition = "2021"
 

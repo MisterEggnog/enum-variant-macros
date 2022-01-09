@@ -1,6 +1,6 @@
 use ::std::mem::size_of;
 use strum_macros::IntoStaticStr;
-use try_from_derive::TryFromVariants;
+use enum_variant_macros::TryFromVariants;
 
 #[allow(dead_code)]
 #[derive(IntoStaticStr, TryFromVariants)]

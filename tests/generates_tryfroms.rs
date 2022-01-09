@@ -1,5 +1,5 @@
 use strum_macros::IntoStaticStr;
-use try_from_derive::*;
+use enum_variant_macros::*;
 
 #[allow(dead_code)]
 #[derive(IntoStaticStr, TryFromVariants)]

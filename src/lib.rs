@@ -11,7 +11,7 @@
 //!
 //! ## Example
 //! ```
-//! use try_from_derive_proc::*;
+//! use enum_variant_macros::*;
 //! use strum_macros::IntoStaticStr;
 //!
 //! #[derive(PartialEq, Debug, IntoStaticStr, FromVariants, TryFromVariants)]
@@ -26,8 +26,8 @@
 use std::error::Error;
 use std::fmt;
 
-pub use try_from_derive_proc::FromVariants;
-pub use try_from_derive_proc::TryFromVariants;
+pub use enum_variant_macros_macros::FromVariants;
+pub use enum_variant_macros_macros::TryFromVariants;
 
 /// Different variant than expected during TryFrom
 #[derive(Debug, PartialEq, Eq)]

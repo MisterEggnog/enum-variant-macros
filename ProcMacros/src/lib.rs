@@ -83,12 +83,12 @@ fn try_from_quote(
 ) -> TokenStream {
     quote! {
     impl TryFrom<#enum_name> for #wrapped_type {
-        type Error = ::try_from_derive::VariantCastError;
+        type Error = ::enum_variant_macros::VariantCastError;
 
         fn try_from(value: #enum_name) -> ::std::result::Result<Self, Self::Error> {
             match value {
                 #enum_name::#variant(n) => Ok(n),
-                _ => Err(::try_from_derive::VariantCastError {
+                _ => Err(::enum_variant_macros::VariantCastError {
                     enum_type: stringify!(#enum_name),
                     exp_type: stringify!(#wrapped_type),
                     variant_name: value.into(),
