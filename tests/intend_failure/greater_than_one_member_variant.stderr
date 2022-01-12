@@ -1,0 +1,5 @@
+error: FromVariants failed for Variants::Point, does not currently support variants that are larger than 1
+ --> tests/intend_failure/greater_than_one_member_variant.rs:6:8
+  |
+6 |     Point(i32, i32),
+  |           ^^^

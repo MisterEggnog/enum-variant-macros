@@ -81,6 +81,17 @@ where
             ))
         }
     };
+    // Check only contains 1 element
+    if member_data.len() != 1 {
+        return Err(syn::Error::new(
+            member_data.span(),
+            format!(
+                "{} failed for {}::{}, does not currently support variants that are larger than 1",
+                macro_name, enum_name, variant.ident
+            ),
+        ));
+    }
+
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
