@@ -1,0 +1,5 @@
+error: Derive FromVariants for NotEnum failed. Must be an enum.
+ --> tests/intend_failure/with_union.rs:3:1
+  |
+3 | union NotEnum {
+  | ^^^^^

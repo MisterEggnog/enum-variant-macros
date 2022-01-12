@@ -4,6 +4,7 @@
 //! This library is solely to provide proc macros.
 use proc_macro2::TokenStream;
 use quote::quote;
+use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
 /// Generates TryFrom for each variant of enum.
@@ -13,7 +14,7 @@ pub fn try_from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStr
 
     let output = from_variants_proc(input, "TryFromVariants", &try_from_quote);
 
-    output.into()
+    output.unwrap_or_else(syn::Error::into_compile_error).into()
 }
 
 /// Generates From for each variant of enum.
@@ -23,16 +24,20 @@ pub fn from_variants(input: proc_macro::TokenStream) -> proc_macro::TokenStream 
 
     let output = from_variants_proc(input, "FromVariants", &variant_from_quote);
 
-    output.into()
+    output.unwrap_or_else(syn::Error::into_compile_error).into()
 }
 
-fn from_variants_proc<F>(input: DeriveInput, macro_name: &str, quote_fn: F) -> TokenStream
+fn from_variants_proc<F>(
+    input: DeriveInput,
+    macro_name: &str,
+    quote_fn: F,
+) -> syn::Result<TokenStream>
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
 {
-    let input_name = input.ident;
+    let input_name = &input.ident;
 
-    let stream = match input.data {
+    match input.data {
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
             for variant in enum_data.variants {
@@ -43,15 +48,16 @@ where
                     &quote_fn,
                 ));
             }
-            stream
+            Ok(stream)
         }
-        _ => panic!(
-            "Derive {} for {} failed. Must be an enum.",
-            macro_name, input_name
-        ),
-    };
-
-    stream
+        _ => Err(syn::Error::new(
+            input.span(),
+            format!(
+                "Derive {} for {} failed. Must be an enum.",
+                macro_name, input_name
+            ),
+        )),
+    }
 }
 
 fn generate_variant_froms<F>(
