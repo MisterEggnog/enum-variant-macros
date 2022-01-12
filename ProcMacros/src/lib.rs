@@ -46,7 +46,7 @@ where
                     &variant,
                     macro_name,
                     &quote_fn,
-                ));
+                )?);
             }
             Ok(stream)
         }
@@ -65,21 +65,26 @@ fn generate_variant_froms<F>(
     variant: &syn::Variant,
     macro_name: &str,
     quote_fn: F,
-) -> TokenStream
+) -> syn::Result<TokenStream>
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
 {
     let member_data = match &variant.fields {
         Fields::Unnamed(fields) => &fields.unnamed,
-        _ => panic!(
-            "{} requires only unamed members, failed {}::{}",
-            macro_name, enum_name, variant.ident
-        ),
+        _ => {
+            return Err(syn::Error::new(
+                variant.fields.span(),
+                format!(
+                    "{} can only use unamed members, failed for {}::{}",
+                    macro_name, enum_name, variant.ident
+                ),
+            ))
+        }
     };
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
-    quote_fn(enum_name, variant, wrapped_type)
+    Ok(quote_fn(enum_name, variant, wrapped_type))
 }
 
 fn try_from_quote(
