@@ -42,10 +42,7 @@ where
             let mut stream = TokenStream::new();
             for variant in enum_data.variants {
                 stream.extend(generate_variant_froms(
-                    &input_name,
-                    &variant,
-                    macro_name,
-                    &quote_fn,
+                    input_name, &variant, macro_name, &quote_fn,
                 )?);
             }
             Ok(stream)
