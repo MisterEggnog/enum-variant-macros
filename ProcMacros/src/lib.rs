@@ -134,35 +134,3 @@ fn variant_from_quote(
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use proc_macro2::TokenStream;
-    use std::str::FromStr;
-    use syn::{parse2, DeriveInput};
-
-    #[test]
-    #[should_panic(expected = "Derive TryFromVariants for NotEnum failed. Must be an enum.")]
-    fn fails_for_struct() {
-        let struct_tokens: TokenStream = TokenStream::from_str("struct NotEnum;").unwrap();
-        let struct_tokens: DeriveInput = parse2(struct_tokens).unwrap();
-        from_variants_proc(struct_tokens, "TryFromVariants", &try_from_quote);
-    }
-
-    #[test]
-    #[should_panic(expected = "Derive TryFromVariants for NotEnum failed. Must be an enum.")]
-    fn fails_for_union_proc() {
-        let union_tokens = TokenStream::from_str("union NotEnum { a: u32, b: f32, }").unwrap();
-        let union_tokens: DeriveInput = parse2(union_tokens).unwrap();
-        from_variants_proc(union_tokens, "TryFromVariants", &try_from_quote);
-    }
-
-    #[test]
-    #[should_panic(expected = "TryFromVariants requires only unamed members, failed Dewey::Frank")]
-    fn fails_for_non_unnamed_enums() {
-        let enum_tokens = TokenStream::from_str("enum Dewey { Frank, Ernest(bool), }").unwrap();
-        let enum_tokens: DeriveInput = parse2(enum_tokens).unwrap();
-        from_variants_proc(enum_tokens, "TryFromVariants", &try_from_quote);
-    }
-}
