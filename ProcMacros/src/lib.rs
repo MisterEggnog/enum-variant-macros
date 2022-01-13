@@ -49,10 +49,7 @@ where
         }
         _ => Err(syn::Error::new(
             input.span(),
-            format!(
-                "Derive {} for {} failed. Must be an enum.",
-                macro_name, input_name
-            ),
+            format!("Derive {macro_name} for {input_name} failed. Must be an enum."),
         )),
     }
 }
