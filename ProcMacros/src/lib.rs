@@ -4,6 +4,7 @@
 //! This library is solely to provide proc macros.
 use proc_macro2::TokenStream;
 use quote::quote;
+use std::collections::HashSet;
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
@@ -40,9 +41,14 @@ where
     match input.data {
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
+            let mut implented_types = HashSet::new();
             for variant in enum_data.variants {
                 stream.extend(generate_variant_froms(
-                    input_name, &variant, macro_name, &quote_fn,
+                    input_name,
+                    &variant,
+                    macro_name,
+                    &quote_fn,
+                    &implented_types,
                 )?);
             }
             Ok(stream)
@@ -59,6 +65,7 @@ fn generate_variant_froms<F>(
     variant: &syn::Variant,
     macro_name: &str,
     quote_fn: F,
+    implemented_types: &HashSet<syn::Ident>,
 ) -> syn::Result<TokenStream>
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
