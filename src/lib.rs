@@ -52,6 +52,10 @@ impl fmt::Display for VariantCastError {
 
 impl Error for VariantCastError {}
 
+#[doc = include_str!("../README.md")]
+#[cfg(doctest)]
+pub struct ReadmeDoctests;
+
 #[cfg(test)]
 mod tests {
     use super::*;
