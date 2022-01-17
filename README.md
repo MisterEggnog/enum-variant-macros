@@ -13,6 +13,7 @@ This library has 2 macros, TryFromVariants & FromVariants.
 
 TryFromVariants implements TryFrom for each of the variant types, permitting code such as,
 ```rust
+let variant = Variants::Float(12);
 let float: f32 = variant.try_from()?;
 ```
 > Note that derivation of this type also requires that the `impl From<Variant> for &'static str` is also implemented.
