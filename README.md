@@ -3,18 +3,31 @@ Macro library for use in generating From & TryFrom  implementations for enums co
 In other terms, of the following format.
 ```rust
 pub enum Variants {
-	Integer(i32),
-	Float(f32),
-	Bool(bool),
-	Byte(u8),
+    Integer(i32),
+    Float(f32),
+    Bool(bool),
+    Byte(u8),
 }
 ```
 This library has 2 macros, TryFromVariants & FromVariants.
 
 TryFromVariants implements TryFrom for each of the variant types, permitting code such as,
 ```rust
-let variant = Variants::Float(12);
-let float: f32 = variant.try_from()?;
+use enum_variant_macros::*;
+use std::error::Error;
+use strum_macros::IntoStaticStr;
+
+#[derive(IntoStaticStr, TryFromVariants)]
+enum Variants {
+    Integer(i32),
+    Float(f32),
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let variant = Variants::Float(12.0);
+    let float: f32 = TryFrom::try_from(variant)?;
+    Ok(())
+}
 ```
 > Note that derivation of this type also requires that the `impl From<Variant> for &'static str` is also implemented.
 
