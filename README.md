@@ -31,7 +31,19 @@ fn main() -> Result<(), Box<dyn Error>> {
 ```
 > Note that derivation of this type also requires that the `impl From<Variant> for &'static str` is also implemented.
 
-FromVariants does not have any such restrictions.
+FromVariants is relatively simple, it just generates From for each wrapped type.
+```rust
+use enum_variant_macros::*;
+
+#[derive(Debug, PartialEq, FromVariants)]
+enum Variants {
+    Integer(i32),
+    Float(f32),
+}
+
+let variant = Variants::from(12);
+assert_eq!(Variants::Integer(12), variant);
+```
 
 ## Warnings
 There remains a lack of proper error handling, while work has been done in that direction their remains severe edge cases.
