@@ -44,7 +44,3 @@ enum Variants {
 let variant = Variants::from(12);
 assert_eq!(Variants::Integer(12), variant);
 ```
-
-## Warnings
-There remains a lack of proper error handling, while work has been done in that direction their remains severe edge cases.
-Most prominently there is currently no checks for having more than one variant of a type, until the compiler attempts to parse the results.
