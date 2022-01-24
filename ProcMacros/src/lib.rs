@@ -5,7 +5,7 @@
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
-use std::collections::HashSet;
+use std::collections::HashMap;
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
@@ -42,7 +42,7 @@ where
     match input.data {
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
-            let mut implemented_types = HashSet::new();
+            let mut implemented_types = HashMap::new();
             for variant in enum_data.variants {
                 stream.extend(generate_variant_froms(
                     input_name,
@@ -66,7 +66,7 @@ fn generate_variant_froms<F>(
     variant: &syn::Variant,
     macro_name: &str,
     quote_fn: F,
-    implemented_types: &mut HashSet<syn::Field>,
+    implemented_types: &mut HashMap<syn::Field, syn::Ident>,
 ) -> syn::Result<TokenStream>
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
@@ -97,9 +97,7 @@ where
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
-    if implemented_types.insert(wrapped_type.clone()) {
-        Ok(quote_fn(enum_name, variant, wrapped_type))
-    } else {
+    if let Some(_original) = implemented_types.insert(wrapped_type.clone(), variant.clone()) {
         Err(syn::Error::new(
             member_data.span(),
             format!(
@@ -111,6 +109,8 @@ where
                 "blarg"
             ),
         ))
+    } else {
+        Ok(quote_fn(enum_name, variant, wrapped_type))
     }
 }
 
