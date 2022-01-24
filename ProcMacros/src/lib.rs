@@ -97,7 +97,7 @@ where
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
-    if let Some(_original) = implemented_types.insert(wrapped_type.clone(), variant.clone()) {
+    if let Some(original) = implemented_types.insert(wrapped_type.clone(), variant.clone()) {
         Err(syn::Error::new(
             member_data.span(),
             format!(
@@ -106,7 +106,7 @@ where
                 enum_name,
                 variant,
                 enum_name,
-                "blarg"
+                original
             ),
         ))
     } else {
