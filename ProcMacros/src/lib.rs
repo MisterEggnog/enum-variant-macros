@@ -4,6 +4,7 @@
 //! This library is solely to provide proc macros.
 use proc_macro2::TokenStream;
 use quote::quote;
+use quote::ToTokens;
 use std::collections::HashSet;
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
@@ -96,9 +97,21 @@ where
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
 
-    implemented_types.insert(wrapped_type.clone());
-
-    Ok(quote_fn(enum_name, variant, wrapped_type))
+    if implemented_types.insert(wrapped_type.clone()) {
+        Ok(quote_fn(enum_name, variant, wrapped_type))
+    } else {
+        Err(syn::Error::new(
+            member_data.span(),
+            format!(
+                "Repeat of variant for type {} in variant {}::{}. Already defined with {}::{}",
+                wrapped_type.ty.to_token_stream(),
+                enum_name,
+                variant,
+                enum_name,
+                "blarg"
+            ),
+        ))
+    }
 }
 
 fn try_from_quote(

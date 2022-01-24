@@ -1,0 +1,5 @@
+error: Repeat of variant for type i32 in variant Variants::Ell. Already defined with Variants::blarg
+ --> tests/intend_failure/more_than_cast.rs:6:6
+  |
+6 |     Ell(i32),
+  |         ^^^
