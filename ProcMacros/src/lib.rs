@@ -41,14 +41,14 @@ where
     match input.data {
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
-            let implemented_types = HashSet::new();
+            let mut implemented_types = HashSet::new();
             for variant in enum_data.variants {
                 stream.extend(generate_variant_froms(
                     input_name,
                     &variant,
                     macro_name,
                     &quote_fn,
-                    &implemented_types,
+                    &mut implemented_types,
                 )?);
             }
             Ok(stream)
@@ -65,7 +65,7 @@ fn generate_variant_froms<F>(
     variant: &syn::Variant,
     macro_name: &str,
     quote_fn: F,
-    _implemented_types: &HashSet<syn::Ident>,
+    implemented_types: &mut HashSet<syn::Field>,
 ) -> syn::Result<TokenStream>
 where
     F: Fn(&syn::Ident, &syn::Ident, &syn::Field) -> TokenStream,
@@ -95,6 +95,8 @@ where
 
     let variant = &variant.ident;
     let wrapped_type = member_data.first().unwrap();
+
+    implemented_types.insert(wrapped_type.clone());
 
     Ok(quote_fn(enum_name, variant, wrapped_type))
 }
