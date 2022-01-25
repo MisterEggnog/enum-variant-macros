@@ -43,6 +43,7 @@ where
         Data::Enum(enum_data) => {
             let mut stream = TokenStream::new();
             let mut implemented_types = HashMap::new();
+            implemented_types.reserve(enum_data.variants.len());
             for variant in enum_data.variants {
                 stream.extend(generate_variant_froms(
                     input_name,
