@@ -6,8 +6,9 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
 use std::collections::HashMap;
+use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::{parse_macro_input, Data, DeriveInput, Fields};
+use syn::{parse_macro_input, Data, DeriveInput, Fields, Token};
 
 /// Generates TryFrom for each variant of enum.
 #[proc_macro_derive(TryFromVariants)]
@@ -115,8 +116,8 @@ where
     }
 }
 
-fn make_tuple(_variant: &syn::Field) -> syn::Ident {
-	todo!()
+fn make_tuple(_variant: &Punctuated<syn::Field, Token![,]>) -> syn::Type {
+    todo!()
 }
 
 fn try_from_quote(
@@ -156,20 +157,37 @@ fn variant_from_quote(
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-	use proc_macro2::Span;
-	use syn::punctuated::Punctuated;
-	use syn::{Field, Token};
+// Removed test module so that building can confirm test code
+use syn::parse_quote;
+//use proc_macro2::Span;
+//use syn::punctuated::Punctuated;
+//use syn::{Field, Token};
 
-	#[test]
-	fn tuple_variant_ident() {
-		let expected = ("(f32, String, f32)", Span::call_site());
-		let input = {
-			let unnamed = Punctuated::new::<Field, Token![,]>();
-			unnamed.push(
-			()
-		};
-	}
+#[test]
+fn tuple_variant_ident() {
+    let expected: syn::Type = parse_quote!("(f32, String, f32)");
+    //let expected = syn::Ident::new("(f32, String, f32)", Span::call_site());
+    // How the hell are you supposed to create a tuple or anything in this
+    // library.
+    // I guess I could do the same thing I did to derive the input but
+    // I'm not going to waste another 3 hours just to generate a syn::Type.
+
+    // Since syn has no simple way to created an object of type
+    // Punctuated<Field, Comma> this is what I have to do
+    // to make one.
+    let input = quote! { enum Slop { Crunk(f32, String, f32), }};
+    let input: DeriveInput = syn::parse2(input).expect("This cannot fail");
+    let input = match input.data {
+        Data::Enum(enum_) => enum_,
+        _ => panic!("This cannot fail"),
+    };
+    let input = &input.variants[0].fields;
+    let input = match input {
+        Fields::Unnamed(fields) => &fields.unnamed,
+        _ => panic!("This cannot fail"),
+    };
+
+    let result = make_tuple(input);
+
+    assert_eq!(expected, result);
 }
