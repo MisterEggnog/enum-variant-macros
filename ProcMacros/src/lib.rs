@@ -115,6 +115,10 @@ where
     }
 }
 
+fn make_tuple(_variant: &syn::Field) -> syn::Ident {
+	todo!()
+}
+
 fn try_from_quote(
     enum_name: &syn::Ident,
     variant: &syn::Ident,
@@ -150,4 +154,22 @@ fn variant_from_quote(
             }
         }
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+	use proc_macro2::Span;
+	use syn::punctuated::Punctuated;
+	use syn::{Field, Token};
+
+	#[test]
+	fn tuple_variant_ident() {
+		let expected = ("(f32, String, f32)", Span::call_site());
+		let input = {
+			let unnamed = Punctuated::new::<Field, Token![,]>();
+			unnamed.push(
+			()
+		};
+	}
 }
