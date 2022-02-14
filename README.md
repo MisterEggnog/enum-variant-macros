@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 ```
-> Note that derivation of this type also requires that the `impl From<Variant> for &'static str` is also implemented.
+Note: Derivation of this type also requires that `impl From<Variant> for &'static str` is implemented.
 
 FromVariants is relatively simple, it just generates From for each wrapped type.
 ```rust
