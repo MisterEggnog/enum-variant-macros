@@ -44,3 +44,7 @@ enum Variants {
 let variant = Variants::from(12);
 assert_eq!(Variants::Integer(12), variant);
 ```
+
+## License
+Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or
+[MIT license](LICENSE-MIT) at your option.
