@@ -1,5 +1,5 @@
 //! This macro library is currently incomplete, it works for enums in a very
-//! specific format but it is currently touchy.
+//! specific format but it is has some rough spots.
 //!
 //! To use the TryFromVariants macro, the type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
 //! succeed.
