@@ -3,7 +3,7 @@
 //!
 //! To use the TryFromVariants macro, the type needs to provide a `From<YourEnum>` to `&'static str` for for this derivation to
 //! succeed.
-//! I recommend using [strum_macros::IntoStaticStr](https://docs.rs/strum/0.23.0/strum/derive.IntoStaticStr.html).
+//! I recommend using [strum_macros::IntoStaticStr](https://docs.rs/strum/latest/strum/derive.IntoStaticStr.html).
 //! ## Warning
 //! Note that this only works for enums composed solely of 1 member unnamed variant.
 //!
