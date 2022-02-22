@@ -6,7 +6,7 @@ authors = ["Baldwin, Josiah <jbaldwin@nwvariancesoftware.dev>"]
 license = "MIT OR Apache-2.0"
 description = "Macros to generate From & TryFrom for enums"
 repository = "https://github.com/MisterEggnog/enum-variant-macros"
-categories = ["accessibility", "encoding", "rust-patterns"]
+categories = ["rust-patterns"]
 keywords = ["macro", "macros", "enums", "TryFrom", "variants"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
