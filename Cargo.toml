@@ -15,7 +15,7 @@ keywords = ["macros", "enum", "enums", "TryFrom", "variants"]
 enum_variant_macros_macros = { version = "0.1", path = "ProcMacros" }
 
 [dev-dependencies]
-strum_macros = "0.22"
+strum_macros = "0.24"
 trybuild = "1.0"
 
 [workspace]
