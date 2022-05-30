@@ -1,2 +1,5 @@
 This crate contains macros for enum-variant-macros, please use that crate,
 it contains code required for the output of these macros to function.
+
+Licensed under either of Apache License, Version 2.0 or LICENSE-MIT at your
+option.
