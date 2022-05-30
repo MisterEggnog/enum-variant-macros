@@ -1,0 +1,2 @@
+This crate contains macros for enum-variant-macros, please use that crate,
+it contains code required for the output of these macros to function.
