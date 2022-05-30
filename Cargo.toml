@@ -1,6 +1,6 @@
 [package]
 name = "enum_variant_macros"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Baldwin, Josiah <jbaldwin@nwvariancesoftware.dev>"]
 license = "MIT OR Apache-2.0"
