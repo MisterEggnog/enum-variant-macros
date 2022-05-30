@@ -12,7 +12,7 @@ keywords = ["macros", "enum", "enums", "TryFrom", "variants"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-enum_variant_macros_macros = { version = "0.1", path = "ProcMacros" }
+enum_variant_macros_macros = { version = "0.2.0", path = "ProcMacros" }
 
 [dev-dependencies]
 strum_macros = "0.24"
