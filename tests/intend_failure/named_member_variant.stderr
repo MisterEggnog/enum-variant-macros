@@ -1,4 +1,4 @@
-error: FromVariants can only use unamed members, failed for Variants::Point
+error: FromVariants can only use unnamed members, failed for Variants::Point
  --> tests/intend_failure/named_member_variant.rs:6:7
   |
 6 |     Point{ x: i32, y: i32 },

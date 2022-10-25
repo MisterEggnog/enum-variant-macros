@@ -1,4 +1,4 @@
-error: FromVariants can only use unamed members, failed for Variants::None
+error: FromVariants can only use unnamed members, failed for Variants::None
  --> tests/intend_failure/empty_variant.rs:2:10
   |
 2 | #[derive(FromVariants)]
