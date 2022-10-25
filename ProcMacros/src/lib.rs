@@ -78,7 +78,7 @@ where
             return Err(syn::Error::new(
                 variant.fields.span(),
                 format!(
-                    "{} can only use unamed members, failed for {}::{}",
+                    "{} can only use unnamed members, failed for {}::{}",
                     macro_name, enum_name, variant.ident
                 ),
             ))
