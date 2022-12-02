@@ -2,7 +2,7 @@
 name = "enum_variant_macros"
 version = "0.2.0"
 edition = "2021"
-authors = ["Baldwin, Josiah <jbaldwin@nwvariancesoftware.dev>"]
+authors = ["Josiah Baldwin <jbaldwin@nwvariancesoftware.dev>"]
 license = "MIT OR Apache-2.0"
 description = "Macros to generate From & TryFrom for enums"
 repository = "https://github.com/MisterEggnog/enum-variant-macros"
