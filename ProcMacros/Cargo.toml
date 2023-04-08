@@ -13,6 +13,6 @@ repository = "https://github.com/MisterEggnog/enum-variant-macros"
 proc-macro = true
 
 [dependencies]
-syn = { version = "1.0.109", features = ["extra-traits"] }
+syn = { version = "2.0.13", features = ["extra-traits"] }
 quote = "1.0.26"
-proc-macro2 = "1.0.54"
+proc-macro2 = "1.0.56"
