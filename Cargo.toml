@@ -1,6 +1,6 @@
 [package]
 name = "enum_variant_macros"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Josiah Baldwin <jbaldwin@nwvariancesoftware.dev>"]
 license = "MIT OR Apache-2.0"
@@ -12,7 +12,7 @@ keywords = ["macros", "enum", "enums", "TryFrom", "variants"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-enum_variant_macros_macros = { version = "0.2.0", path = "ProcMacros" }
+enum_variant_macros_macros = { version = "0.3.0", path = "ProcMacros" }
 
 [dev-dependencies]
 strum_macros = "0.24"
